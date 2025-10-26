@@ -1,0 +1,23 @@
+
+
+fastapi
+uvicorn
+chromadb
+pyngrok
+pydantic
+requests
+nest_asyncio
+scikit-learn
+pandas
+numpy
+joblib
+
+# Optional Deep Learning (uncomment when needed)
+# torch
+# torchvision
+# torchaudio
+# tensorflow
+# transformers
+# sentence-transformers
+# accelerate
+
