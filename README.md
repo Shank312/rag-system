@@ -1,159 +1,85 @@
-# 🧠 RAG System (Retrieval-Augmented Generation)
+# 🧠 Production-Ready RAG System (FastAPI + ChromaDB + LLMs)
 
-A modular **Retrieval-Augmented Generation (RAG)** system built using **FastAPI**, **ChromaDB**, and **Python**.  
-It retrieves relevant knowledge from markdown files and generates intelligent responses — designed for **AI/ML developers**, **engineers**, and **researchers**.
+> A scalable Retrieval-Augmented Generation (RAG) system designed to power real-world AI applications like documentation assistants, knowledge bots, and developer copilots.
 
----
+🚀 Built for: AI Engineers, Backend Developers, and ML Practitioners
 
-## 🚀 Features
+## 🏗️ Architecture
 
-✅ Retrieval-Augmented Question Answering (QA)  
-✅ Persistent **Chroma Vector Database**  
-✅ Modular architecture: `ingest`, `retriever`, `generator`  
-✅ REST API powered by **FastAPI**  
-✅ Supports **local & cloud deployment** (ngrok / Colab / server)  
-✅ Easy integration with **Hugging Face** or **OpenAI** models  
+<img width="1536" height="1024" alt="01" src="https://github.com/user-attachments/assets/c73e0a82-66e6-4a1c-941e-87fc51a300c2" /><img width="5000" height="2812" alt="02" src="https://github.com/user-attachments/assets/5a2a4817-43d1-403d-b0ad-f8c8623b4230" /><img width="367" height="611" alt="03" src="https://github.com/user-attachments/assets/b15d46ad-35b8-44c2-b88f-9941fa3f6b2c" /><img width="705" height="851" alt="04" src="https://github.com/user-attachments/assets/2b717adc-ae5f-40eb-936b-17eb6fe2226f" /><img width="705" height="696" alt="05" src="https://github.com/user-attachments/assets/8223e91d-9937-4548-a011-889876886d53" /><img width="1376" height="684" alt="06" src="https://github.com/user-attachments/assets/a6f62e66-c9d8-43c1-8069-dadb432a28cf" /><img width="649" height="334" alt="07" src="https://github.com/user-attachments/assets/2eca33f2-3ff0-4b1b-b3ed-cc9b886f2e72" />
 
----
-
-## 🧩 Project Structure
-
-rag-system/
-│
-├── app.py # Main FastAPI app
-├── requirements.txt
-├── .gitignore
-│
-├── src/
-│ ├── init.py
-│ ├── ingest.py # Handles knowledge ingestion into ChromaDB
-│ ├── retriever.py # Fetches relevant chunks for queries
-│ ├── generator.py # Generates final responses
-│ └── app.py # (Optional) alternate app structure
-│
-├── data/
-│ └── knowledge_base/ # Source knowledge files (.md)
-│ ├── iris.md
-│ ├── iris_project.md
-│ ├── logger.md
-│ ├── overview.md
-│ └── project_overview.md
-│
-└── chromadb_store/ # Persistent ChromaDB (auto-generated)
+### Flow:
+1. 📄 Documents → Chunked into smaller pieces
+2. 🔢 Embeddings → Converted using embedding model
+3. 🗄 Stored in ChromaDB (vector database)
+4. 🔍 Query → Embedded & similarity searched
+5. 🧠 Generator → LLM generates final answer using context
 
 
+## 🎥 Demo
 
----
+### Example Query:
+"How are Iris models saved?"
 
-## ⚙️ Installation
+### Response:
+- Uses joblib for serialization
+- Stored as `.pkl` file
+- Retrieved via vector similarity search
 
-### 1️⃣ Clone the Repository
-
-```bash
-git clone https://github.com/Shank312/rag-system.git
-cd rag-system
-
-2️⃣ Create a Virtual Environment
-
-python -m venv venv
-venv\Scripts\activate   # (Windows)
-# or
-source venv/bin/activate  # (Linux/Mac)
+📌 API Docs: http://127.0.0.1:8000/docs
 
 
-3️⃣ Install Dependencies
+## 💼 Use Cases
 
-pip install -r requirements.txt
-
-
-🧠 Running the RAG System
-
-🖥️ Local Development
-uvicorn app:app --reload
-
-Then open:
-👉 Docs UI: http://127.0.0.1:8000/docs
+- 📚 Documentation Q&A (like ChatGPT for your docs)
+- 👨‍💻 Developer Copilot for codebases
+- 🧠 Research Assistant for PDFs & notes
+- 🏢 Internal company knowledge chatbot
 
 
-☁️ Run in Google Colab (Optional)
+## 🚀 Why This Project?
 
-If you want to test live in Colab, use:
-!pip install pyngrok fastapi uvicorn nest_asyncio
-from pyngrok import ngrok
-import nest_asyncio, uvicorn
-from app import app
+Unlike basic chatbot demos, this system:
 
-nest_asyncio.apply()
-public_url = ngrok.connect(8000).public_url
-print("🌍 Public URL:", public_url)
-uvicorn.run(app, host="0.0.0.0", port=8000)
+- Uses real retrieval (not hallucination)
+- Supports scalable vector search
+- Works with local + cloud LLMs
+- Built with production-ready FastAPI backend
 
 
-🔍 API Usage
-POST /query
+## 🔮 Roadmap
 
-Example Request:
-curl -X POST "http://127.0.0.1:8000/query" \
-     -H "Content-Type: application/json" \
-     -d "{\"query\": \"How are Iris models saved?\"}"
-
-Example Response:
-{
-  "query": "How are Iris models saved?",
-  "answer": "Iris models are saved using joblib in the file iris_decision_tree_model.pkl",
-  "retrieved": [
-    "Iris project uses scikit-learn DecisionTree and joblib for persistence..."
-  ]
-}
+- [ ] Add streaming responses (OpenAI / SSE)
+- [ ] Integrate LangChain / LlamaIndex
+- [ ] Add hybrid search (BM25 + vector)
+- [ ] UI with Streamlit / Next.js
+- [ ] Docker deployment
+- [ ] Authentication + multi-user support
 
 
-🧱 Modules Overview:
-| Module          | Description                                                    |
-| --------------- | -------------------------------------------------------------- |
-| **`Ingestor`**  | Loads markdown knowledge files and stores embeddings in Chroma |
-| **`Retriever`** | Finds most relevant chunks using cosine similarity             |
-| **`Generator`** | Combines context and query to generate final answer            |
-| **`app.py`**    | FastAPI interface exposing `/query` endpoint                   |
+## 👨‍💻 About Me
+
+Hi, I'm Shankar Kumar — building production-level AI systems.
+
+💡 Skills:
+- AI/ML Systems
+- RAG Pipelines
+- FastAPI Backend
+- Vector Databases
+
+📬 Open for:
+- Freelance AI projects
+- Remote AI Engineer roles ($$$)
+
+🔗 GitHub: https://github.com/Shank312
 
 
-🧠 Future Enhancements
-
-Integrate Hugging Face Transformers for local LLM generation
-
-Add Streamlit UI for visual RAG exploration
-
-Support multi-document upload and dynamic ingestion
-
-Plug-in OpenAI GPT-4 API for enhanced generation
 
 
-🧰 Tech Stack
-
-| Layer       | Technology                      |
-| ----------- | ------------------------------- |
-| Backend     | FastAPI                         |
-| Vector DB   | ChromaDB                        |
-| Data        | Markdown Knowledge Base         |
-| Optional ML | PyTorch / TensorFlow (optional) |
-| Deployment  | ngrok / Uvicorn / Colab         |
 
 
-🧑‍💻 Author
-
-Shankar Kumar
-🌐 GitHub
-
-📘 AI/ML | System Design | Full-Stack Engineering
 
 
-⭐ Contribute
 
-Pull requests and feature suggestions are welcome!
-If you find this helpful, please ⭐ the repo to show support.
-
-
-📜 License
-
-This project is open-source under the MIT License.
 
 
